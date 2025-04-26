@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+dist/
+out/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.secret
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.directory
+.Trash-*
+
+# Compiled output
+*.tsbuildinfo
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Hardhat deployment files
+deployments/
+
+# Local Netlify folder
+.netlify
+
+# Polkadot specific
+.polkadot/
+
+# Temporary files
+*.tmp
+*~
