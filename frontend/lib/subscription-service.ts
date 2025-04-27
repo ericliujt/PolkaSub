@@ -55,9 +55,9 @@ export async function fetchSubscriptions(address: string): Promise<Subscription[
           id: `payment_${Date.now()}`,
           date: yesterday.toLocaleDateString(),
           amount: "0.5",
-          blockNumber: 11542695,
+          blockNumber: 11545279,
           status: "Completed",
-          explorerLink: "https://assethub-westend.subscan.io/block/11542695",
+          explorerLink: "https://assethub-westend.subscan.io/block/11545279",
           txHash: `0x${generateRandomHex(64)}`,
         },
       ],
@@ -111,7 +111,7 @@ export async function createSubscription(
       console.error("creating subscription (blockchain):", error);
       // Use fallback values
       txHash = `0x${generateRandomHex(64)}`;
-      blockNumber = 11542695 + Math.floor(Math.random() * 10);
+      blockNumber = 11545279 + Math.floor(Math.random() * 10);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1500));

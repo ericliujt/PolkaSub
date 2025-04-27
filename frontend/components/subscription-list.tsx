@@ -180,7 +180,7 @@ export default function SubscriptionList() {
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">Contract Address</h4>
                       <a
-                        href={`https://westend.subscan.io/account/${subscription.contractAddress}`}
+                        href={`https://assethub-westend.subscan.io/account/${subscription.contractAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-mono text-sm text-polkadot-pink hover:text-polkadot-pink-light flex items-center gap-1"

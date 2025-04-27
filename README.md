@@ -1,13 +1,30 @@
 # PolkaSub - A Subscription Manager on Polkadot Westend
 
-A subscription management system built on the Polkadot Westend testnet, specifically targeting the Asset Hub.
+A subscription management system built on the Polkadot Westend Asset Hub testnet.
+
+## Demo
+
+### Video demo:
+https://www.loom.com/share/682f04da781d4ad88c4fe378698c097a?sid=337036e8-59e3-47b3-aed7-b5cf952725a0
+
+### Screenshots of the frontend:
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+### Canvas presentation link:
+https://www.canva.com/design/DAGl1CHQT-w/7DdAlb1r3PYss-N1VcxO2g/edit?utm_content=DAGl1CHQT-w&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## Features
 
 ### Frontend
-- UI for users to subscribe to services (pay every N blocks)
-- View active subscriptions
-- Cancel subscriptions
+- Built with typescript and nextjs
+- Metamask for wallet connection
+- UI:
+  - View active subscriptions
+  - Create new subscriptions
+  - Check payment history and progress
+  - Cancel subscriptions
 
 ### Smart Contract (Solidity)
 - Manages subscription agreements
@@ -17,11 +34,9 @@ A subscription management system built on the Polkadot Westend testnet, specific
 ## Project Structure
 
 - `/contract` - Hardhat project with Solidity smart contracts for subscription management
-- `/frontend` - React-based frontend application
+- `/frontend` - Next.js frontend application
 
 ## Setup and Installation
-
-### Frontend Setup
 
 1. Navigate to the frontend directory:
    ```bash
@@ -43,31 +58,16 @@ A subscription management system built on the Polkadot Westend testnet, specific
 
 4. Access the application at http://localhost:3000
 
-### Smart Contract Setup
 
-1. Navigate to the contracts directory:
-   ```bash
-   cd contracts
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file from the example:
-   ```bash
-   cp .env.example .env
-   ```
-
-4. Add your private key to the `.env` file
-
-5. Deploy the contract to Westend EVM:
-   ```bash
-   npx hardhat run scripts/deploy.js --network westend
-   ```
-
-## To-dos
-- Make sure your RPC URL points to a working Westend EVM node
+## Important notes for users
+- Make sure your wallet is on the Westend Asset Hub network (chainId: 420420421)
 - Fund your deployer's account with some test WND
-- Update the frontend to use your deployed contract address
+
+## Important notes for hackathon
+- Parts of the current smart contract are still in development, not all features are working as intended
+
+## Future Improvements
+- Ability to delete a subscription
+- Deploy to mainnet
+- Make frontend prettier
+- Fix bugs in function calls
