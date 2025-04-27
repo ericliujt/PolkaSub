@@ -1,64 +1,75 @@
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.8.2 <0.9.0;
 
 contract SubscriptionManager {
-    struct Subscription {
+    struct Sub {
+        address subscriber;
         address recipient;
         uint256 amount;
+        uint256 balance;
         uint256 nextBlock;
+        uint256 frequency;
         bool active;
     }
     
-    mapping(uint256 => Subscription) public subscriptions;
-    mapping(address => uint256[]) public userSubscriptions;
-    uint256 private counter;
+    mapping(uint256 => Sub) public subs;
+    mapping(address => uint256[]) public userSubs;
+    uint256 private _counter;
     
-    event SubscriptionCreated(uint256 indexed id, address indexed recipient);
-    event PaymentSent(uint256 indexed id, uint256 amount);
+    event Created(uint256 indexed id, address indexed recipient);
+    event Paid(uint256 indexed id, uint256 amount);
     
-    // Create a new subscription
-    function createSubscription(address recipient, uint256 amount) external payable returns (uint256) {
-        require(recipient != address(0), "Invalid recipient");
-        require(amount > 0, "Amount must be positive");
-        require(msg.value >= amount, "Insufficient funds");
-        
-        // Send first payment
-        payable(recipient).transfer(amount);
-        
-        // Create subscription
-        uint256 id = counter++;
-        subscriptions[id] = Subscription({
-            recipient: recipient,
+    /**
+     * @notice Create a new subscription
+     * @param to The recipient of the subscription payments
+     * @param amount The amount to pay each interval
+     * @param freq The frequency (in blocks) for each payment
+     * @return id The new subscription ID
+     */
+    function create(address to, uint256 amount, uint256 freq) external payable returns (uint256 id) {
+        require(to != address(0), "Recipient cannot be zero address");
+        require(amount > 0, "Amount must be greater than zero");
+        require(freq > 0, "Frequency must be greater than zero");
+        require(msg.value >= amount, "Insufficient ETH sent for first payment");
+
+        id = _counter;
+        _counter++;
+
+        // Effects: update state before external call
+        subs[id] = Sub({
+            subscriber: msg.sender,
+            recipient: to,
             amount: amount,
-            nextBlock: block.number + 100,
+            balance: msg.value - amount,
+            nextBlock: block.number + freq,
+            frequency: freq,
             active: true
         });
-        
-        userSubscriptions[msg.sender].push(id);
-        
-        emit SubscriptionCreated(id, recipient);
-        emit PaymentSent(id, amount);
-        
-        return id;
+        userSubs[msg.sender].push(id);
+
+        emit Created(id, to);
+
+        // Interactions: external call after state update
+        (bool sent, ) = to.call{value: amount}("");
+        require(sent, "First payment transfer failed");
+        emit Paid(id, amount);
     }
     
-    // Process a payment for a subscription
-    function processPayment(uint256 id) external {
-        Subscription storage sub = subscriptions[id];
-        require(sub.active, "Subscription not active");
-        require(address(this).balance >= sub.amount, "Insufficient contract balance");
+    function process(uint256 id) external {
+        Sub storage s = subs[id];
+        require(s.active && block.number >= s.nextBlock && s.balance >= s.amount, "Error");
         
-        payable(sub.recipient).transfer(sub.amount);
-        sub.nextBlock = block.number + 100;
+        (bool sent,) = s.recipient.call{value: s.amount}("");
+        require(sent, "Failed");
         
-        emit PaymentSent(id, sub.amount);
+        s.balance -= s.amount;
+        s.nextBlock += s.frequency;
+        if (s.balance < s.amount) s.active = false;
+        
+        emit Paid(id, s.amount);
     }
     
-    // Get all subscriptions for a user
-    function getSubscriptions(address user) external view returns (uint256[] memory) {
-        return userSubscriptions[user];
+    function getUserSubs(address user) external view returns (uint256[] memory) {
+        return userSubs[user];
     }
-    
-    // Function to receive ETH
-    receive() external payable {}
 }
