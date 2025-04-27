@@ -4,12 +4,23 @@ import { useState, useEffect } from "react"
 import { useWallet } from "@/components/wallet-provider"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Loader2, Trash2, AlertCircle, ChevronDown, ChevronUp, ExternalLink, Calendar, Clock } from "lucide-react"
+import {
+  Loader2,
+  Trash2,
+  AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  Calendar,
+  Clock,
+  Wallet,
+} from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { type Subscription, fetchSubscriptions, cancelSubscription } from "@/lib/subscription-service"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 
 export default function SubscriptionList() {
   const { address, signer } = useWallet()
@@ -69,6 +80,13 @@ export default function SubscriptionList() {
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 8)}...${address.slice(-8)}`
+  }
+
+  const calculateProgressPercentage = (subscription: Subscription) => {
+    const total = Number.parseFloat(subscription.totalAmount)
+    const left = Number.parseFloat(subscription.amountLeft)
+    const used = total - left
+    return Math.round((used / total) * 100)
   }
 
   if (isLoading) {
@@ -183,6 +201,34 @@ export default function SubscriptionList() {
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-polkadot-pink" />
                         <span>{subscription.createdAt}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-secondary p-4 rounded-lg mb-4">
+                    <h4 className="font-medium mb-2 flex items-center gap-2">
+                      <Wallet className="h-4 w-4 text-polkadot-pink" />
+                      Subscription Balance
+                    </h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Amount Left:</span>
+                        <span className="font-medium">{subscription.amountLeft} WND</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Total Amount:</span>
+                        <span className="font-medium">{subscription.totalAmount} WND</span>
+                      </div>
+                      <Progress value={calculateProgressPercentage(subscription)} className="h-2 mt-1" />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>
+                          Used:{" "}
+                          {(
+                            Number.parseFloat(subscription.totalAmount) - Number.parseFloat(subscription.amountLeft)
+                          ).toFixed(2)}{" "}
+                          WND
+                        </span>
+                        <span>{calculateProgressPercentage(subscription)}%</span>
                       </div>
                     </div>
                   </div>

@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useWallet } from "@/components/wallet-provider"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Loader2 } from "lucide-react"
+import { Loader2, Info } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,24 +16,39 @@ import { CheckCircle2, AlertCircle } from "lucide-react"
 import { createSubscription } from "@/lib/subscription-service"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const formSchema = z.object({
-  name: z.string().min(1, "Subscription name is required"),
-  recipient: z
-    .string()
-    .startsWith("0x", "Ethereum address must start with 0x")
-    .length(42, "Ethereum address must be exactly 42 characters"),
-  amount: z.string().refine((val) => !isNaN(Number.parseFloat(val)) && Number.parseFloat(val) > 0, {
-    message: "Amount must be a positive number",
-  }),
-  intervalType: z.enum(["time", "blocks"]),
-  timeInterval: z.enum(["daily", "weekly", "monthly"]).optional(),
-  blockInterval: z
-    .string()
-    .refine((val) => !val || (!isNaN(Number.parseInt(val)) && Number.parseInt(val) > 0), {
-      message: "Block interval must be a positive number",
-    })
-    .optional(),
-})
+const formSchema = z
+  .object({
+    name: z.string().min(1, "Subscription name is required"),
+    recipient: z
+      .string()
+      .startsWith("0x", "Ethereum address must start with 0x")
+      .length(42, "Ethereum address must be exactly 42 characters"),
+    amount: z.string().refine((val) => !isNaN(Number.parseFloat(val)) && Number.parseFloat(val) > 0, {
+      message: "Amount must be a positive number",
+    }),
+    totalAmount: z.string().refine((val) => !isNaN(Number.parseFloat(val)) && Number.parseFloat(val) > 0, {
+      message: "Total amount must be a positive number",
+    }),
+    intervalType: z.enum(["time", "blocks"]),
+    timeInterval: z.enum(["daily", "weekly", "monthly"]).optional(),
+    blockInterval: z
+      .string()
+      .refine((val) => !val || (!isNaN(Number.parseInt(val)) && Number.parseInt(val) > 0), {
+        message: "Block interval must be a positive number",
+      })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      const amount = Number.parseFloat(data.amount)
+      const totalAmount = Number.parseFloat(data.totalAmount)
+      return totalAmount >= amount
+    },
+    {
+      message: "Total amount must be greater than or equal to the payment amount",
+      path: ["totalAmount"],
+    },
+  )
 
 interface CreateSubscriptionFormProps {
   onSuccess?: () => void
@@ -52,11 +67,23 @@ export default function CreateSubscriptionForm({ onSuccess }: CreateSubscription
       name: "",
       recipient: "",
       amount: "",
+      totalAmount: "",
       intervalType: "time",
       timeInterval: "monthly",
       blockInterval: "1000",
     },
   })
+
+  // Watch the amount field to update the total amount suggestion
+  const amountValue = form.watch("amount")
+
+  useEffect(() => {
+    if (amountValue && !form.getValues("totalAmount")) {
+      // Suggest a total amount that covers 12 payments
+      const suggestedTotal = (Number.parseFloat(amountValue) * 12).toFixed(2)
+      form.setValue("totalAmount", suggestedTotal)
+    }
+  }, [amountValue, form])
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!address || !signer) return
@@ -69,13 +96,21 @@ export default function CreateSubscriptionForm({ onSuccess }: CreateSubscription
       const interval =
         values.intervalType === "time" ? (values.timeInterval as string) : `${values.blockInterval} blocks`
 
-      await createSubscription(signer, values.name, values.recipient, Number.parseFloat(values.amount), interval)
+      await createSubscription(
+        signer,
+        values.name,
+        values.recipient,
+        Number.parseFloat(values.amount),
+        Number.parseFloat(values.totalAmount),
+        interval,
+      )
 
       setSuccess(true)
       form.reset({
         name: "",
         recipient: "",
         amount: "",
+        totalAmount: "",
         intervalType: intervalType,
         timeInterval: "monthly",
         blockInterval: "1000",
@@ -107,6 +142,14 @@ export default function CreateSubscriptionForm({ onSuccess }: CreateSubscription
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
+        <Alert className="mb-6 bg-secondary border-polkadot-pink/20">
+          <Info className="h-4 w-4 text-polkadot-pink" />
+          <AlertDescription className="text-sm">
+            Specify the periods of subscription will be held. Then transfer the total amount to the smart contract. The
+            smart contract will then periodically pay the recipient according to how the subscription is set up.
+          </AlertDescription>
+        </Alert>
+
         {success && (
           <Alert className="mb-6 bg-green-900 text-green-100 border-green-700">
             <CheckCircle2 className="h-4 w-4 text-green-400" />
@@ -157,20 +200,37 @@ export default function CreateSubscriptionForm({ onSuccess }: CreateSubscription
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount (WND)</FormLabel>
-                  <FormControl>
-                    <Input type="number" step="0.01" placeholder="0.00" {...field} />
-                  </FormControl>
-                  <FormDescription>Amount in Westend tokens to send each period</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Payment Amount (WND)</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormDescription>Amount in Westend tokens to send each period</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="totalAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Amount (WND)</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormDescription>Total amount to deposit for all payments</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}

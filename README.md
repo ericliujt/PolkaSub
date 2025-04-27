@@ -35,6 +35,9 @@ A subscription management system built on the Polkadot Westend testnet, specific
 
 3. Start the development server:
    ```bash
+   npx next build
+   ```
+   ```bash
    npx next dev
    ```
 
