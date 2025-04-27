@@ -31,7 +31,7 @@ https://www.canva.com/design/DAGl1CHQT-w/7DdAlb1r3PYss-N1VcxO2g/edit?utm_content
 - Collects and transfers payments
 - Tracks subscription status (Active, Cancelled, Expired)
 - block explorer link (asset hub westend subscan):
-    https://assethub-westend.subscan.io/account/0x9178de2345fd30e4c208a3fc3568ac32002f1259
+    https://assethub-westend.subscan.io/account/0x455aaFbD12cAeF26858ecd72c87f944Ce1f04d64
 
 
 ## Project Structure

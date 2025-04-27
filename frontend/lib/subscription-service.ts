@@ -48,7 +48,7 @@ export async function fetchSubscriptions(address: string): Promise<Subscription[
       amountLeft: "14.5", // Total minus one payment
       interval: "daily",
       nextPayment: today.toLocaleDateString(),
-      contractAddress: `0x9178de2345fd30e4c208a3fc3568ac32002f1259`,
+      contractAddress: `0x455aaFbD12cAeF26858ecd72c87f944Ce1f04d64`,
       createdAt: yesterday.toLocaleDateString(),
       paymentHistory: [
         {
@@ -57,7 +57,7 @@ export async function fetchSubscriptions(address: string): Promise<Subscription[
           amount: "0.5",
           blockNumber: 11545279,
           status: "Completed",
-          explorerLink: "https://assethub-westend.subscan.io/block/11545279",
+          explorerLink: "https://assethub-westend.subscan.io/block/11545879",
           txHash: `0x${generateRandomHex(64)}`,
         },
       ],
@@ -80,7 +80,7 @@ export async function createSubscription(
 ): Promise<void> {
   try {
     // Contract address of the deployed SubscriptionManager
-    const contractAddress = "0x9178de2345fd30e4c208a3fc3568ac32002f1259";
+    const contractAddress = "0x455aaFbD12cAeF26858ecd72c87f944Ce1f04d64";
     
     // Updated ABI for the create function
     const abi = [
@@ -111,7 +111,7 @@ export async function createSubscription(
       console.error("creating subscription (blockchain):", error);
       // Use fallback values
       txHash = `0x${generateRandomHex(64)}`;
-      blockNumber = 11545279 + Math.floor(Math.random() * 10);
+      blockNumber = 11545879 + Math.floor(Math.random() * 10);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1500));

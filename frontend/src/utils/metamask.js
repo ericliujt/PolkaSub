@@ -16,7 +16,7 @@ const SUBSCRIPTION_MANAGER_ABI = [
 ];
 
 // Contract address - replace with your deployed contract address
-const SUBSCRIPTION_MANAGER_ADDRESS = '0x9178de2345fd30e4c208a3fc3568ac32002f1259';
+const SUBSCRIPTION_MANAGER_ADDRESS = '0x455aaFbD12cAeF26858ecd72c87f944Ce1f04d64';
 
 // Connect to MetaMask
 export const connectWallet = async () => {
