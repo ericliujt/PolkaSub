@@ -1,14 +1,21 @@
 {
-  "name": "contracts",
+  "name": "polkasub-contracts",
   "version": "1.0.0",
+  "description": "Simple payment contract for PolkaSub on Westend EVM",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network westend",
+    "test": "hardhat test"
   },
-  "keywords": [],
+  "keywords": [
+    "polkadot",
+    "westend",
+    "evm",
+    "subscription"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "dotenv": "^16.5.0",

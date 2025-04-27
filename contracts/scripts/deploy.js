@@ -7,7 +7,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  console.log("Deploying SubscriptionManager contract...");
+  console.log("Deploying SubscriptionManager contract to Westend EVM...");
 
   // Deploy the SubscriptionManager contract
   const SubscriptionManager = await hre.ethers.getContractFactory("SubscriptionManager");
@@ -15,20 +15,22 @@ async function main() {
 
   await subscriptionManager.waitForDeployment();
 
-  const subscriptionManagerAddress = await subscriptionManager.getAddress();
-  console.log(`SubscriptionManager deployed to: ${subscriptionManagerAddress}`);
+  const contractAddress = await subscriptionManager.getAddress();
+  console.log(`SubscriptionManager deployed to: ${contractAddress}`);
 
   // Log deployment details for easy reference
   console.log("\nDeployment Details:");
   console.log("--------------------");
   console.log(`Network: ${hre.network.name}`);
-  console.log(`Contract Address: ${subscriptionManagerAddress}`);
+  console.log(`Contract Address: ${contractAddress}`);
   console.log(`Block Number: ${await hre.ethers.provider.getBlockNumber()}`);
   console.log(`Gas Price: ${await hre.ethers.provider.getFeeData().then(data => data.gasPrice)}`);
   
-  // Return the contract address for testing
+  console.log("\nVerify contract with:");
+  console.log(`npx hardhat verify --network westend ${contractAddress}`);
+  
   return {
-    subscriptionManager: subscriptionManagerAddress
+    subscriptionManager: contractAddress
   };
 }
 

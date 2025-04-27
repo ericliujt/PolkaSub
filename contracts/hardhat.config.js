@@ -5,6 +5,15 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY || "0x000000000000000000000000000000
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+  solidity: {
+    version: "0.8.7",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  },
   networks: {
     // Local development network
     hardhat: {
@@ -19,18 +28,9 @@ module.exports = {
     },
   },
   paths: {
-    sources: "./SubscriptionManager.sol",
+    sources: "./contracts",
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts"
-  },
-  solidity: {
-    version: "0.8.20",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200
-      }
-    }
-  },
+  }
 };
