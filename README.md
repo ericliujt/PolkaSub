@@ -1,4 +1,4 @@
-# PolkaSub - Subscription Manager for Polkadot
+# PolkaSub - A Subscription Manager on Polkadot Westend
 
 A subscription management system built on the Polkadot Westend testnet, specifically targeting the Asset Hub.
 
