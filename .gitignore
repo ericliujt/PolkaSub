@@ -12,6 +12,11 @@ build/
 dist/
 out/
 
+# Next.js
+.next/
+.vercel
+next-env.d.ts
+
 # Environment variables and secrets
 .env
 .env.local

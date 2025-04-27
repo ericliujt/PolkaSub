@@ -21,8 +21,50 @@ A subscription management system built on the Polkadot Westend testnet, specific
 
 ## Setup and Installation
 
-See the README files in each directory for specific setup instructions.
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install --legacy-peer-deps
+   ```
+
+3. Start the development server:
+   ```bash
+   npx next dev
+   ```
+
+4. Access the application at http://localhost:3000
+
+### Smart Contract Setup
+
+1. Navigate to the contracts directory:
+   ```bash
+   cd contracts
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file from the example:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Add your private key to the `.env` file
+
+5. Deploy the contract to Westend EVM:
+   ```bash
+   npx hardhat run scripts/deploy.js --network westend
+   ```
 
 ## To-dos
-Make sure your RPC URL points to a working Westend EVM node.
-Fund your deployer's account with some test WND.
+- Make sure your RPC URL points to a working Westend EVM node
+- Fund your deployer's account with some test WND
+- Update the frontend to use your deployed contract address
