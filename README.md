@@ -4,7 +4,7 @@ A subscription management system built on the Polkadot Westend Asset Hub testnet
 
 ## Demo
 
-### Video demo:
+### Video demo: (the demo includes both the presentation and live demo of PolkaSub)
 https://www.loom.com/share/682f04da781d4ad88c4fe378698c097a?sid=337036e8-59e3-47b3-aed7-b5cf952725a0
 
 ### Screenshots of the frontend:
@@ -32,7 +32,7 @@ https://www.canva.com/design/DAGl1CHQT-w/7DdAlb1r3PYss-N1VcxO2g/edit?utm_content
 - Tracks subscription status (Active, Cancelled, Expired)
 - block explorer link (asset hub westend subscan):
     https://assethub-westend.subscan.io/account/0x9178de2345fd30e4c208a3fc3568ac32002f1259
-    
+
 
 ## Project Structure
 
