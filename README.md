@@ -4,8 +4,12 @@ A subscription management system built on the Polkadot Westend Asset Hub testnet
 
 ## Demo
 
-### Video demo: (the demo includes both the presentation and live demo of PolkaSub)
-https://www.loom.com/share/682f04da781d4ad88c4fe378698c097a?sid=337036e8-59e3-47b3-aed7-b5cf952725a0
+### Video demo: 
+Presentation:
+https://www.loom.com/share/7abb1d115cb448d59292ff0a16ccc0ce?sid=82d11bbf-aa8d-4ae0-b046-9ebaf0cb79c2
+Live demo:
+https://www.loom.com/share/18f0fa1686b04e17bc8312bea70ee96e?sid=c41504c0-daa0-4532-b24f-42246e5da9c8
+
 
 ### Screenshots of the frontend:
 ![alt text](image.png)
@@ -67,7 +71,7 @@ https://www.canva.com/design/DAGl1CHQT-w/7DdAlb1r3PYss-N1VcxO2g/edit?utm_content
 - Fund your deployer's account with some test WND
 
 ## Important notes for hackathon
-- Parts of the current smart contract are still in development, not all features are working as intended
+- Parts of the current smart contract are still in development, not all features are working as intended (features include block-based frequency payments and cancellation that still needs to be implemented)
 
 ## Future Improvements
 - Ability to delete a subscription
