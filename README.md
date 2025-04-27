@@ -1,6 +1,6 @@
 # PolkaSub - A Subscription Manager on Polkadot Westend
 
-A subscription management system built on the Polkadot Westend Asset Hub testnet.
+A subscription management system built on the Polkadot Westend Asset Hub testnet. Built for convenience, transparency, simplicity, and security. EasyA x Polkadot hackathon at Havard University 2025.
 
 ## Demo
 
@@ -38,6 +38,18 @@ https://www.canva.com/design/DAGl1CHQT-w/7DdAlb1r3PYss-N1VcxO2g/edit?utm_content
 - block explorer link (asset hub westend subscan):
     https://assethub-westend.subscan.io/account/0x455aaFbD12cAeF26858ecd72c87f944Ce1f04d64
 
+## Full desription
+PolkaSub is a decentralized platform that allows users to create, manage, and cancel recurring subscription payments directly on-chain.
+It removes reliance on traditional payment processors, offers full transparency into payment schedules, and ensures user control over subscription services — all powered by crypto assets on the Westend Asset Hub.
+Flow:
+Users create subscriptions by interacting directly with a smart contract.
+Subscription payments are scheduled transparently based on dates or block intervals.
+Cancellations are instant, with no need for provider approval.
+Developers and providers can easily integrate subscription models into their services.
+Advantages:
+Interoperability: Future expansion to subscriptions across parachains.
+Scalability: Frequent payment interactions remain low-cost.
+Security: Shared security through Polkadot relay chain governance.
 
 ## Project Structure
 
